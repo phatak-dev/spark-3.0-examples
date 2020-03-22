@@ -29,16 +29,17 @@ object DataSourceV2Example {
     println(
       "number of partitions in simple multi source is " + simpleMultiDf.rdd.getNumPartitions)
 
-    /*
+
     val simpleCsvDf = sparkSession.read
-      .format("com.madhukaraphatak.examples.sparktwo.datasourcev2.simplecsv")
-      .load("src/main/resources/sales.csv")
+      .format("com.madhukaraphatak.spark.sources.datasourcev2.simplecsv")
+      .load("src/main/resources/adult.csv")
 
     simpleCsvDf.printSchema()
     simpleCsvDf.show()
     println(
       "number of partitions in simple csv source is " + simpleCsvDf.rdd.getNumPartitions)
 
+    /*
     val simpleMysqlDf = sparkSession.read
       .format("com.madhukaraphatak.examples.sparktwo.datasourcev2.simplemysql")
       .load()
