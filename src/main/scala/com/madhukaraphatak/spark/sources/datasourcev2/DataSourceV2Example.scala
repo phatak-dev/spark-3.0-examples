@@ -1,7 +1,8 @@
 package com.madhukaraphatak.spark.sources.datasourcev2
 
 import org.apache.spark.Partition
-import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.{SaveMode, SparkSession}
+import shapeless.Tuple
 
 object DataSourceV2Example {
 
@@ -39,21 +40,21 @@ object DataSourceV2Example {
     println(
       "number of partitions in simple csv source is " + simpleCsvDf.rdd.getNumPartitions)
 
-    /*
-    val simpleMysqlDf = sparkSession.read
-      .format("com.madhukaraphatak.examples.sparktwo.datasourcev2.simplemysql")
-      .load()
 
-    simpleMysqlDf.printSchema()
-    simpleMysqlDf.filter("user=\"root\"").show()
-    println(
-      "number of partitions in simple mysql source is " + simpleMysqlDf.rdd.getNumPartitions)
+
+
+    val simpleMysqlDf = sparkSession.createDataFrame(Seq(
+      Tuple1("test1"),
+      Tuple1("test2")
+    )).toDF("user")
 
     //write examples
     simpleMysqlDf.write
       .format(
-        "com.madhukaraphatak.examples.sparktwo.datasourcev2.simplemysqlwriter")
+        "com.madhukaraphatak.spark.sources.datasourcev2.simplemysqlwriter")
+      .mode(SaveMode.Append)
       .save()
+/*
     simpleMysqlDf.write
       .format(
         "com.madhukaraphatak.examples.sparktwo.datasourcev2.mysqlwithtransaction")

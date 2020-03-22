@@ -8,5 +8,6 @@ val sparkVersion = "3.0.0-preview2"
 
 libraryDependencies ++= Seq(
   "org.apache.spark" %% "spark-sql" % sparkVersion,
-  "org.apache.spark" %% "spark-mllib" % sparkVersion
+  "org.apache.spark" %% "spark-mllib" % sparkVersion,
+  "mysql" % "mysql-connector-java" % "5.1.6"
 )
