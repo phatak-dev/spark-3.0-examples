@@ -11,6 +11,10 @@ object MultiCharacterDelimiterCSV {
           .appName("csvexample")
           .getOrCreate()
 
+
+    // throws java.lang.IllegalArgumentException: Delimiter cannot be more than one character: ||
+    // in spark 2.x
+
     val df  = sparkSession.read
       .option("delimiter","||")
       .option("header","true")
