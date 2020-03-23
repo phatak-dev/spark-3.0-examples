@@ -9,3 +9,4 @@ dependency-reduced-pom.xml
 *.sw*
 metastore_db
 *.log
+creditcard*
