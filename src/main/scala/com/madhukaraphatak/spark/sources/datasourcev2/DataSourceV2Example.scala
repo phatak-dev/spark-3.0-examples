@@ -54,8 +54,8 @@ object DataSourceV2Example {
         "com.madhukaraphatak.spark.sources.datasourcev2.simplemysqlwriter")
       .mode(SaveMode.Append)
       .save()
-/*
-    simpleMysqlDf.write
+
+   /* simpleMysqlDf.write
       .format(
         "com.madhukaraphatak.examples.sparktwo.datasourcev2.mysqlwithtransaction")
       .save()

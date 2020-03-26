@@ -5,6 +5,7 @@ import java.util
 
 import org.apache.spark.sql.catalyst.InternalRow
 import org.apache.spark.sql.connector.catalog._
+import org.apache.spark.sql.connector.expressions.Transform
 import org.apache.spark.sql.connector.write._
 import org.apache.spark.sql.types.{StringType, StructType}
 import org.apache.spark.sql.util.CaseInsensitiveStringMap
@@ -17,7 +18,12 @@ import scala.collection.JavaConverters._
   */
 
 class DefaultSource extends TableProvider{
-  override def getTable(caseInsensitiveStringMap: CaseInsensitiveStringMap): Table = new MysqlTable
+    override def inferSchema(caseInsensitiveStringMap: CaseInsensitiveStringMap): StructType =
+    getTable(null,Array.empty[Transform],caseInsensitiveStringMap.asCaseSensitiveMap()).schema()
+
+  override def getTable(structType: StructType, transforms: Array[Transform], map: util.Map[String, String]): Table ={
+      new MysqlTable
+    }
 }
 
 
@@ -25,7 +31,6 @@ class MysqlTable extends SupportsWrite{
 
   private val tableSchema = new StructType().add("user", StringType)
 
-  override def newWriteBuilder(caseInsensitiveStringMap: CaseInsensitiveStringMap): WriteBuilder = new MysqlWriterBuilder
 
   override def name(): String = this.getClass.toString
 
@@ -33,6 +38,8 @@ class MysqlTable extends SupportsWrite{
 
   override def capabilities(): util.Set[TableCapability] = Set(TableCapability.BATCH_WRITE,
     TableCapability.TRUNCATE).asJava
+
+  override def newWriteBuilder(logicalWriteInfo: LogicalWriteInfo): WriteBuilder = new MysqlWriterBuilder
 }
 
 class MysqlWriterBuilder extends WriteBuilder{

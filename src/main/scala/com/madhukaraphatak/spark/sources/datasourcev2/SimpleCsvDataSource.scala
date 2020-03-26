@@ -5,6 +5,7 @@ import java.util
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.catalyst.InternalRow
 import org.apache.spark.sql.connector.catalog.{SupportsRead, Table, TableCapability, TableProvider}
+import org.apache.spark.sql.connector.expressions.Transform
 import org.apache.spark.sql.connector.read._
 import org.apache.spark.sql.types.{StringType, StructField, StructType}
 import org.apache.spark.sql.util.CaseInsensitiveStringMap
@@ -17,8 +18,11 @@ import scala.collection.JavaConverters._
   */
 class DefaultSource extends TableProvider{
 
-    override def getTable(options: CaseInsensitiveStringMap): Table = {
-      val path = options.get("path")
+    override def inferSchema(caseInsensitiveStringMap: CaseInsensitiveStringMap): StructType =
+    getTable(null,Array.empty[Transform],caseInsensitiveStringMap.asCaseSensitiveMap()).schema()
+
+  override def getTable(structType: StructType, transforms: Array[Transform], map: util.Map[String, String]): Table ={
+      val path = map.get("path")
       new CsvBatchTable(path)
     }
 
@@ -111,7 +115,6 @@ class CsvPartitionReader(inputPartition: CsvPartition) extends PartitionReader[I
   }
 
   def get = {
-    println("calling get")
     val line = iterator.next()
     InternalRow.fromSeq(line.split(",").map(value => UTF8String.fromString(value)))
   }
