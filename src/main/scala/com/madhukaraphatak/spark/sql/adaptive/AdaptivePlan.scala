@@ -10,12 +10,12 @@ object AdaptivePlan {
     val conf = new SparkConf()
       .setAppName("test plan")
       .setMaster("local[2]")
-      .set("spark.sql.adaptive.enabled","true")
-      .set("spark.sql.runtime.reoptimization.enabled","true")
+      .set("spark.sql.adaptive.enabled", "true")
+      .set("spark.sql.runtime.reoptimization.enabled", "true")
 
     val sparkSession = SparkSession.builder().config(conf).getOrCreate()
 
-    val df = sparkSession.range(0,100)
+    val df = sparkSession.range(0, 100)
 
     df.explain(true)
 

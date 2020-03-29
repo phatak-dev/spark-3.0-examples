@@ -10,15 +10,15 @@ object AdaptiveShuffle {
     val conf = new SparkConf()
       .setAppName("test plan")
       .setMaster("local[2]")
-      .set("spark.sql.adaptive.enabled","true")
-      .set("spark.sql.runtime.reoptimization.enabled","true")
+      .set("spark.sql.adaptive.enabled", "true")
+      .set("spark.sql.runtime.reoptimization.enabled", "true")
 
     val sparkSession = SparkSession.builder().config(conf).getOrCreate()
 
     val df = sparkSession.read.
       format("csv")
-      .option("header","true")
-      .option("inferSchema","true")
+      .option("header", "true")
+      .option("inferSchema", "true")
       .load("src/main/resources/sales.csv").repartition(500)
 
     df.groupBy("customerId").count().count()
