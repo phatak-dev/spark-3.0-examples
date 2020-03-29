@@ -1,4 +1,4 @@
-package com.madhukaraphatak.spark.core.plugins.driveronly
+package com.madhukaraphatak.spark.core.plugins.driverplugin
 import java.net.ServerSocket
 import java.util
 

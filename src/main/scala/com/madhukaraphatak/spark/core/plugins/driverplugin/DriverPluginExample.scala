@@ -1,4 +1,4 @@
-package com.madhukaraphatak.spark.core.plugins.driveronly
+package com.madhukaraphatak.spark.core.plugins.driverplugin
 
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
@@ -9,7 +9,7 @@ object DriverPluginExample {
 
     val sparkConf = new SparkConf()
       .setMaster("local[2]")
-      .set("spark.plugins","com.madhukaraphatak.spark.core.plugins.driveronly.CustomSparkPlugin")
+      .set("spark.plugins","com.madhukaraphatak.spark.core.plugins.driverplugin.CustomSparkPlugin")
       .setAppName("executor plugin example")
 
 

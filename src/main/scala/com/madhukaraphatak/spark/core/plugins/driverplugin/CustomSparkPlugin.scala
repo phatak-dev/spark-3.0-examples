@@ -1,4 +1,4 @@
-package com.madhukaraphatak.spark.core.plugins.driveronly
+package com.madhukaraphatak.spark.core.plugins.driverplugin
 
 import org.apache.spark.api.plugin.{DriverPlugin, ExecutorPlugin, SparkPlugin}
 
