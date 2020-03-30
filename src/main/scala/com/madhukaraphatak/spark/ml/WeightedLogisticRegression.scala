@@ -61,8 +61,6 @@ object WeightedLogisticRegression {
 
   def getRatio(df:DataFrame) = {
     val fraudDf = df.filter("Class=1.0")
-    val nonFraudDf = df.filter("Class=0.0")
-    //random sample the nonFraud to match the value of fraud
     val sampleRatio = fraudDf.count().toDouble / df.count().toDouble
     sampleRatio
   }
