@@ -18,7 +18,6 @@ object InMemoryTableScanExample {
     )).toDF("id", "sales")
 
     firstDF.createOrReplaceTempView("firstDf")
-
     sparkSession.catalog.cacheTable("firstDf")
 
     val secondDF = sparkSession.createDataFrame(Seq(
@@ -29,10 +28,18 @@ object InMemoryTableScanExample {
     secondDF.createOrReplaceTempView("secondDf")
     sparkSession.catalog.cacheTable("secondDf")
 
-    val joinDF = firstDF.join(secondDF, "id")
+    val thirdDF = sparkSession.createDataFrame(Seq(
+      ("1", 70),
+      ("2", 80)
+    )).toDF("id", "value")
+
+    thirdDF.createOrReplaceTempView("thirdDf")
+    sparkSession.catalog.cacheTable("thirdDf")
+
+    val joinDF = firstDF.join(secondDF, "id").join(thirdDF,"id")
 
     joinDF.count()
-
+    
   }
 
 }
