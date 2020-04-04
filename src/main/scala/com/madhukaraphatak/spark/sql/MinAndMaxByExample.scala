@@ -21,6 +21,19 @@ object MinAndMaxByExample {
     )).toDF("id","value")
     df.createOrReplaceTempView("table")
 
+
+    // min by window function
+
+    import org.apache.spark.sql.expressions.Window
+    import org.apache.spark.sql.functions.dense_rank
+
+    val orderedDf = Window.orderBy(df.col("value"))
+    val rankedDf = df.withColumn("rank", dense_rank.over(orderedDf))
+    val minDf = rankedDf.filter("rank == 1")
+    minDf.show()
+
+
+
     // find the id which has maximum value
 
     val resultDf = sparkSession.sql("select max_by(id,value) max_id, min_by(id,value) min_id from table")
