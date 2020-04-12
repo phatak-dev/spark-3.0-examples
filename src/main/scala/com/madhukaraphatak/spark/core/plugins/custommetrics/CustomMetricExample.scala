@@ -8,20 +8,31 @@ object CustomMetricExample {
   def main(args: Array[String]): Unit = {
 
     val sparkConf = new SparkConf()
-      .setMaster("local[2]")
+      .setMaster("local[4]")
       .set("spark.plugins","com.madhukaraphatak.spark.core.plugins.custommetrics.CustomMetricSparkPlugin")
-      .set("spark.metrics.conf","src/main/resources/metric.properties")
+       .set("spark.metrics.conf","src/main/resources/metric.properties")
       .setAppName("executor plugin example")
 
 
     val sparkSession = SparkSession.builder.config(sparkConf).getOrCreate()
 
+    import sparkSession.implicits._
+
     val df = sparkSession.range(5000).repartition(5)
 
-    df.count()
+    val incrementedDf = df.mapPartitions(iterator => {
+      var evenCount = 0
+      val incrementedIterator = iterator.toList.map(value => {
+        if(value % 2 == 0) evenCount = evenCount +1
+        value +1
+      }).toIterator
+      CustomMetricSparkPlugin.value.set(evenCount)
+      incrementedIterator
+    })
 
 
-    sparkSession.stop()
+    incrementedDf.count()
+
 
   }
 }
