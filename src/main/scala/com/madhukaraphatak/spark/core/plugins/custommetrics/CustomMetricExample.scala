@@ -10,7 +10,7 @@ object CustomMetricExample {
     val sparkConf = new SparkConf()
       .setMaster("local[4]")
       .set("spark.plugins","com.madhukaraphatak.spark.core.plugins.custommetrics.CustomMetricSparkPlugin")
-       .set("spark.metrics.conf","src/main/resources/metric.properties")
+       .set("spark.metrics.conf","src/main/resources/metrics.properties")
       .setAppName("executor plugin example")
 
 
