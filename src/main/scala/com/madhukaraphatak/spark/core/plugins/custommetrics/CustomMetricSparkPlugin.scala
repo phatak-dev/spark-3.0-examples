@@ -1,13 +1,12 @@
 package com.madhukaraphatak.spark.core.plugins.custommetrics
 
 import java.util
-import java.util.concurrent.atomic.AtomicLong
 
-import com.codahale.metrics.Gauge
+import com.codahale.metrics.Counter
 import org.apache.spark.api.plugin.{DriverPlugin, ExecutorPlugin, PluginContext, SparkPlugin}
 
 object CustomMetricSparkPlugin {
-  val value = new AtomicLong()
+  val value = new Counter
 }
 
 class CustomMetricSparkPlugin extends SparkPlugin{
@@ -16,9 +15,7 @@ class CustomMetricSparkPlugin extends SparkPlugin{
   override def executorPlugin(): ExecutorPlugin = new ExecutorPlugin {
    override def init(ctx: PluginContext, extraConf: util.Map[String, String]): Unit = {
       val metricRegistry = ctx.metricRegistry()
-      metricRegistry.register("evenMetrics", new Gauge[Long] {
-        override def getValue: Long = CustomMetricSparkPlugin.value.get()
-      })
+      metricRegistry.register("evenMetrics",CustomMetricSparkPlugin.value)
     }
   }
 }

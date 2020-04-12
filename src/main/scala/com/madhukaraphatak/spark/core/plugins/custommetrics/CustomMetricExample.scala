@@ -26,7 +26,7 @@ object CustomMetricExample {
         if(value % 2 == 0) evenCount = evenCount +1
         value +1
       }).toIterator
-      CustomMetricSparkPlugin.value.set(evenCount)
+      CustomMetricSparkPlugin.value.inc(evenCount)
       incrementedIterator
     })
 
