@@ -2,36 +2,41 @@ package com.madhukaraphatak.spark.core.plugins.rpccommunication
 
 import java.util
 
+import com.codahale.metrics.Counter
 import org.apache.spark.api.plugin.{DriverPlugin, ExecutorPlugin, PluginContext, SparkPlugin}
 
+
+case object InitialConfigRequest extends  Serializable
+case class InitialConfigResponse(value:Int) extends Serializable
+
+case class FinalValueResponse(value : Int) extends Serializable
 case class RpcMessage(message:String) extends Serializable
+
 
 class RpcSparkPlugin extends SparkPlugin{
   override def driverPlugin(): DriverPlugin = new DriverPlugin {
-    override def receive(message: scala.Any): AnyRef = {
-      message match
-      {
-        case RpcMessage(message) => {
-          println(" executor sent the message " + message)
-          RpcMessage(s"received $message in driver")
-        }
-        case _ => RpcMessage("unknown message sent")
-      }
-    }
-  }
+   override def receive(message: scala.Any): AnyRef = {
+     message match {
+       case InitialConfigRequest => InitialConfigResponse(10)
+       case FinalValueResponse(value)  => println("the final value is "+ value); null
+
+     }
+ }
+}
 
   override def executorPlugin(): ExecutorPlugin = new ExecutorPlugin {
     var pluginContext:PluginContext = null
+    var initialConfiguration:Int = 0
+
     override def init(ctx: PluginContext, extraConf: util.Map[String, String]): Unit = {
       pluginContext = ctx
-       val rpcMessage = new RpcMessage("this is a fire and forget message by executor")
-      pluginContext.send(rpcMessage)
+      initialConfiguration = pluginContext.ask(InitialConfigRequest).asInstanceOf[InitialConfigResponse].value
+      println("the initial configuration is " + initialConfiguration)
     }
 
     override def shutdown(): Unit = {
-      val rpcMessage = new RpcMessage("this is blocking message from executor")
-      val rpcResponse = pluginContext.ask(rpcMessage)
-      println("the response for ask message is " + rpcResponse)
+      val rpcMessage = FinalValueResponse(10 * initialConfiguration)
+      pluginContext.send(rpcMessage)
     }
   }
 }
