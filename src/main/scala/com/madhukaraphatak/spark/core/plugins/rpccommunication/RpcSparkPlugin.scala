@@ -18,7 +18,7 @@ class RpcSparkPlugin extends SparkPlugin{
    override def receive(message: scala.Any): AnyRef = {
      message match {
        case InitialConfigRequest => InitialConfigResponse(10)
-       case FinalValueResponse(value)  => println("the final value is "+ value); null
+       case FinalValueResponse(value)  => println("the final value is "+ value); Unit
 
      }
  }
