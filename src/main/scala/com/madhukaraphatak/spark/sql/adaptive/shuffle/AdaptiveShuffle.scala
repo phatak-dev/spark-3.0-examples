@@ -11,7 +11,7 @@ object AdaptiveShuffle {
       .setAppName("test plan")
       .setMaster("local[2]")
       .set("spark.sql.adaptive.enabled", "true")
-      .set("spark.sql.runtime.reoptimization.enabled", "true")
+      .set("spark.sql.adaptive.coalescePartitions.enabled", "true")
 
     val sparkSession = SparkSession.builder().config(conf).getOrCreate()
 

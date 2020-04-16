@@ -8,10 +8,8 @@ object NoAdaptiveShuffle {
   def main(args: Array[String]): Unit = {
 
     val conf = new SparkConf()
-      .setAppName("test plan")
+      .setAppName("no adaptive shuffle")
       .setMaster("local[2]")
-    //.set("spark.sql.adaptive.enabled","true")
-    //.set("spark.sql.runtime.reoptimization.enabled","true")
 
     val sparkSession = SparkSession.builder().config(conf).getOrCreate()
 
@@ -24,13 +22,8 @@ object NoAdaptiveShuffle {
 
     df.groupBy("customerId").count().count()
 
-    //val joinDf  = firstDf.join(secondDf,firstDf.col("customerId") === secondDf.col("customerId"),"left")
 
-    // println("number of partitions "+joinDf.rdd.partitions.length)
-
-    //joinDf.count()
-
-    Thread.sleep(1000000)
+    //Thread.sleep(1000000)
 
 
   }
