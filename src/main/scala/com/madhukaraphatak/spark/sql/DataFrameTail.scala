@@ -14,8 +14,6 @@ object DataFrameTail {
     //head
     println(df.head(2).toList)
 
-    //tail. Yet to be merged https://issues.apache.org/jira/browse/SPARK-30185
-
     println(df.tail(5).toList)
 
 
