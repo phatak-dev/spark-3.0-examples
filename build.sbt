@@ -4,7 +4,7 @@ version := "0.1"
 
 scalaVersion := "2.12.4"
 
-val sparkVersion = "3.0.0-SNAPSHOT"
+val sparkVersion = "3.0.1"
 
 
 resolvers += "Spark Snapshot Repository" at "https://repository.apache.org/snapshots"
